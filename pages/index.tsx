@@ -3,7 +3,8 @@ import { useCallback } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import { Box, Container, Divider, Heading } from '@chakra-ui/react';
+import { Box, Container, Divider, Heading, Text } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 
 import ToDoForm, { Props as FormProps } from 'components/ToDoForm';
 import ToDoList, { Props as ListProps } from 'components/ToDoList';
@@ -57,11 +58,17 @@ const Home: NextPage = () => {
           </Heading>
 
           <Box boxShadow='base' p='6' rounded='md' bg='white'>
-            <ToDoList
-              items={items}
-              onItemChange={changeToDoStatus}
-              onItemRemove={removeToDo}
-            />
+            {isEmpty(items) ? (
+              <Text textAlign='center' fontSize='sm' color='grey'>
+                No items added
+              </Text>
+            ) : (
+              <ToDoList
+                items={items}
+                onItemChange={changeToDoStatus}
+                onItemRemove={removeToDo}
+              />
+            )}
 
             <Divider my='4' />
 
