@@ -1,9 +1,12 @@
+import { useCallback } from 'react';
+
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import { Container, Heading } from '@chakra-ui/react';
+import { Box, Container, Divider, Heading } from '@chakra-ui/react';
 
-import ToDoList from 'components/ToDoList';
+import ToDoForm, { Props as FormProps } from 'components/ToDoForm';
+import ToDoList, { Props as ListProps } from 'components/ToDoList';
 
 const items = [
   {
@@ -21,6 +24,24 @@ const items = [
 ];
 
 const Home: NextPage = () => {
+  const createToDo = useCallback<FormProps['onSubmit']>(async (values) => {
+    // TODO: add BE call
+    console.log('todo created', values);
+  }, []);
+
+  const changeToDoStatus = useCallback<ListProps['onItemChange']>(
+    async (item) => {
+      // TODO: add BE call
+      console.log('todo changed', item);
+    },
+    [],
+  );
+
+  const removeToDo = useCallback<ListProps['onItemRemove']>(async (item) => {
+    // TODO: add BE call
+    console.log('todo removed', item);
+  }, []);
+
   return (
     <>
       <Head>
@@ -35,7 +56,17 @@ const Home: NextPage = () => {
             ToDo list
           </Heading>
 
-          <ToDoList items={items} />
+          <Box boxShadow='base' p='6' rounded='md' bg='white'>
+            <ToDoList
+              items={items}
+              onItemChange={changeToDoStatus}
+              onItemRemove={removeToDo}
+            />
+
+            <Divider my='4' />
+
+            <ToDoForm onSubmit={createToDo} />
+          </Box>
         </Container>
       </main>
     </>
