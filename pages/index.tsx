@@ -13,14 +13,17 @@ const items = [
   {
     id: '1',
     title: 'Groceries',
+    isDone: false,
   },
   {
     id: '2',
     title: 'Clean the house',
+    isDone: true,
   },
   {
     id: '3',
     title: 'Call mom',
+    isDone: false,
   },
 ];
 
@@ -47,7 +50,7 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>ToDo app</title>
-        <meta name='description' content='Best ToDo app' />
+        <meta name='description' content='The best ToDo app' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
 

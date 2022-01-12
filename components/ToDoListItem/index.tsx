@@ -1,24 +1,29 @@
-import { FC } from 'react';
-
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Checkbox, IconButton, ListItem, Spacer } from '@chakra-ui/react';
 
+import { ToDo } from 'types/ToDo';
+
 type Props = {
-  onChange: () => void;
-  onRemove: () => void;
+  item: ToDo;
+  onChange: (item: ToDo) => void;
+  onRemove: (item: ToDo) => void;
 };
 
-const ToDoListItem: FC<Props> = ({ children, onChange, onRemove }) => {
+const ToDoListItem = ({ item, onChange, onRemove }: Props) => {
   return (
     <ListItem display='flex'>
-      <Checkbox onChange={onChange}>{children}</Checkbox>
+      <Checkbox onChange={() => onChange(item)} defaultChecked={item.isDone}>
+        {item.title}
+      </Checkbox>
+
       <Spacer />
+
       <IconButton
         colorScheme='red'
         aria-label='Remove ToDo'
         icon={<DeleteIcon />}
         size='xs'
-        onClick={onRemove}
+        onClick={() => onRemove(item)}
       />
     </ListItem>
   );

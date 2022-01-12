@@ -2,7 +2,7 @@ import { UnorderedList } from '@chakra-ui/react';
 import { map } from 'lodash';
 
 import ToDoListItem from 'components/ToDoListItem';
-import { ToDo } from 'types/toDo';
+import { ToDo } from 'types/ToDo';
 
 export type Props = {
   items: ToDo[];
@@ -16,11 +16,10 @@ const ToDoList = ({ items, onItemChange, onItemRemove }: Props) => {
       {map(items, (item) => (
         <ToDoListItem
           key={item.id}
-          onChange={() => onItemChange(item)}
-          onRemove={() => onItemRemove(item)}
-        >
-          {item.title}
-        </ToDoListItem>
+          item={item}
+          onChange={onItemChange}
+          onRemove={onItemRemove}
+        />
       ))}
     </UnorderedList>
   );
