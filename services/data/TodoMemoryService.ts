@@ -2,25 +2,10 @@ import { injectable } from 'inversify';
 import { filter, find } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  CreateValues,
-  ToDoService,
-  UpdateValues,
-} from 'types/services/ToDoService';
 import { ToDo } from 'types/ToDo';
+import { CreateValues, ToDoService, UpdateValues } from 'types/ToDoService';
 
-let todos: ToDo[] = [
-  {
-    id: '1',
-    title: 'Groceries',
-    isDone: false,
-  },
-  {
-    id: '2',
-    title: 'Clean the house',
-    isDone: true,
-  },
-];
+let todos: ToDo[] = [];
 
 @injectable()
 export default class TodoRestApiService implements ToDoService {

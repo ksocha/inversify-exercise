@@ -37,3 +37,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 dbFile.json
+logs.txt

@@ -1,11 +1,7 @@
 import { injectable } from 'inversify';
 
-import {
-  CreateValues,
-  ToDoService,
-  UpdateValues,
-} from 'types/services/ToDoService';
 import { ToDo } from 'types/ToDo';
+import { CreateValues, ToDoService, UpdateValues } from 'types/ToDoService';
 
 @injectable()
 export default class TodoRestApiService implements ToDoService {
