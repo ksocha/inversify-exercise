@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -8,8 +8,9 @@ import { isEmpty } from 'lodash';
 
 import ToDoForm, { Props as FormProps } from 'components/ToDoForm';
 import ToDoList, { Props as ListProps } from 'components/ToDoList';
+import { ToDo } from 'types/ToDo';
 
-const items = [
+let data = [
   {
     id: '1',
     title: 'Groceries',
@@ -27,24 +28,55 @@ const items = [
   },
 ];
 
+function fetchAll(): Promise<ToDo[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([...data]);
+    });
+  });
+}
+
 const Home: NextPage = () => {
-  const createToDo = useCallback<FormProps['onSubmit']>(async (values) => {
-    // TODO: add BE call
-    console.log('todo created', values);
+  const [items, setItems] = useState<ToDo[]>([]);
+
+  const fetchData = useCallback(() => {
+    fetchAll().then((data) => setItems(data));
   }, []);
 
-  const changeToDoStatus = useCallback<ListProps['onItemChange']>(
-    async (item) => {
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const createToDo = useCallback<FormProps['onSubmit']>(
+    async (newItemValues) => {
       // TODO: add BE call
-      console.log('todo changed', item);
+      console.log('todo created', newItemValues);
     },
     [],
   );
 
-  const removeToDo = useCallback<ListProps['onItemRemove']>(async (item) => {
-    // TODO: add BE call
-    console.log('todo removed', item);
-  }, []);
+  const changeToDoStatus = useCallback<ListProps['onItemChange']>(
+    async (changedItem) => {
+      // TODO: add BE call
+      console.log('todo changed', changedItem);
+
+      data = data.map((item) =>
+        item.id === changedItem.id ? changedItem : item,
+      );
+    },
+    [],
+  );
+
+  const removeToDo = useCallback<ListProps['onItemRemove']>(
+    async (itemToRemove) => {
+      // TODO: add BE call
+      console.log('todo removed', itemToRemove);
+
+      data = data.filter((item) => item.id !== itemToRemove.id);
+      fetchData();
+    },
+    [fetchData],
+  );
 
   return (
     <>

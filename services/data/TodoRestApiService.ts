@@ -1,9 +1,6 @@
-import { injectable } from 'inversify';
-
 import { ToDo } from 'types/ToDo';
 import { CreateValues, ToDoService, UpdateValues } from 'types/ToDoService';
 
-@injectable()
 export default class TodoRestApiService implements ToDoService {
   public async fetchAll(): Promise<ToDo[]> {
     const response = await fetch('/api/todos', {

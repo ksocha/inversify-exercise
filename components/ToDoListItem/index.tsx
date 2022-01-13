@@ -12,7 +12,12 @@ type Props = {
 const ToDoListItem = ({ item, onChange, onRemove }: Props) => {
   return (
     <ListItem display='flex'>
-      <Checkbox onChange={() => onChange(item)} defaultChecked={item.isDone}>
+      <Checkbox
+        onChange={(event) =>
+          onChange({ ...item, isDone: event.target.checked })
+        }
+        defaultChecked={item.isDone}
+      >
         {item.title}
       </Checkbox>
 

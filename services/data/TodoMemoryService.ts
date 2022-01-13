@@ -1,4 +1,3 @@
-import { injectable } from 'inversify';
 import { filter, find } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,7 +6,6 @@ import { CreateValues, ToDoService, UpdateValues } from 'types/ToDoService';
 
 let todos: ToDo[] = [];
 
-@injectable()
 export default class TodoRestApiService implements ToDoService {
   public async fetchAll(): Promise<ToDo[]> {
     return [...todos];
