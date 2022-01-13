@@ -36,6 +36,9 @@ export default async function handler(
       if (todo) {
         todo.isDone = req.body.isDone;
         await db.write();
+      } else {
+        res.status(404).end();
+        return;
       }
 
       break;
