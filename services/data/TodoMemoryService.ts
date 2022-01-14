@@ -6,7 +6,7 @@ import { CreateValues, ToDoService, UpdateValues } from 'types/ToDoService';
 
 let todos: ToDo[] = [];
 
-export default class TodoRestApiService implements ToDoService {
+export default class TodoMemoryService implements ToDoService {
   public async fetchAll(): Promise<ToDo[]> {
     return [...todos];
   }
