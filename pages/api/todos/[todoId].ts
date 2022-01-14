@@ -54,6 +54,7 @@ export default async function handler(
 
       await db.write();
 
+      res.status(200).end();
       break;
     }
 
