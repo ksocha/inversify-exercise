@@ -24,7 +24,7 @@ export default class TodoMemoryService implements ToDoService {
   }
 
   public async update(toDoId: string, values: UpdateValues): Promise<ToDo> {
-    const todo = find(todos, (todo) => todo.id !== toDoId);
+    const todo = find(todos, (todo) => todo.id === toDoId);
 
     if (todo) {
       todo.isDone = values.isDone;

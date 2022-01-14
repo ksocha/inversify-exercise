@@ -31,7 +31,7 @@ export default async function handler(
     case 'PATCH': {
       await db.read();
 
-      const todo = find(db.data?.todos, (todo) => todo.id !== req.query.todoId);
+      const todo = find(db.data?.todos, (todo) => todo.id === req.query.todoId);
 
       if (todo) {
         todo.isDone = req.body.isDone;
