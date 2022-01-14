@@ -4,78 +4,41 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import { Box, Container, Divider, Heading, Text } from '@chakra-ui/react';
+import { useInjection } from 'inversify-react';
 import { isEmpty } from 'lodash';
 
 import ToDoForm, { Props as FormProps } from 'components/ToDoForm';
 import ToDoList, { Props as ListProps } from 'components/ToDoList';
 import { ToDo } from 'types/ToDo';
-
-let data = [
-  {
-    id: '1',
-    title: 'Groceries',
-    isDone: false,
-  },
-  {
-    id: '2',
-    title: 'Clean the house',
-    isDone: true,
-  },
-  {
-    id: '3',
-    title: 'Call mom',
-    isDone: false,
-  },
-];
-
-function fetchAll(): Promise<ToDo[]> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([...data]);
-    });
-  });
-}
+import { ToDoService } from 'types/ToDoService';
 
 const Home: NextPage = () => {
+  const service = useInjection(ToDoService.$);
+
   const [items, setItems] = useState<ToDo[]>([]);
 
   const fetchData = useCallback(() => {
-    fetchAll().then((data) => setItems(data));
-  }, []);
+    service.fetchAll().then((data) => setItems(data));
+  }, [service]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   const createToDo = useCallback<FormProps['onSubmit']>(
-    async (newItemValues) => {
-      // TODO: add BE call
-      console.log('todo created', newItemValues);
-    },
-    [],
+    (newItemValues) => service.create(newItemValues).then(() => fetchData()),
+    [fetchData, service],
   );
 
   const changeToDoStatus = useCallback<ListProps['onItemChange']>(
-    async (changedItem) => {
-      // TODO: add BE call
-      console.log('todo changed', changedItem);
-
-      data = data.map((item) =>
-        item.id === changedItem.id ? changedItem : item,
-      );
-    },
-    [],
+    (changedItem) =>
+      service.update(changedItem.id, changedItem).then(() => fetchData()),
+    [fetchData, service],
   );
 
   const removeToDo = useCallback<ListProps['onItemRemove']>(
-    async (itemToRemove) => {
-      // TODO: add BE call
-      console.log('todo removed', itemToRemove);
-
-      data = data.filter((item) => item.id !== itemToRemove.id);
-      fetchData();
-    },
-    [fetchData],
+    (itemToRemove) => service.delete(itemToRemove.id).then(() => fetchData()),
+    [fetchData, service],
   );
 
   return (

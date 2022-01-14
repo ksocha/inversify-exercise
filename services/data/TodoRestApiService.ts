@@ -1,7 +1,17 @@
+import { inject, injectable } from 'inversify';
+
+import { Logger } from 'types/Logger';
 import { ToDo } from 'types/ToDo';
 import { CreateValues, ToDoService, UpdateValues } from 'types/ToDoService';
 
+@injectable()
 export default class TodoRestApiService implements ToDoService {
+  private logger: Logger;
+
+  public constructor(@inject(Logger.$) logger: Logger) {
+    this.logger = logger;
+  }
+
   public async fetchAll(): Promise<ToDo[]> {
     const response = await fetch('/api/todos', {
       method: 'GET',
@@ -19,6 +29,8 @@ export default class TodoRestApiService implements ToDoService {
       body: JSON.stringify(values),
     });
 
+    this.logger.log('created item');
+
     return response.json();
   }
 
@@ -31,6 +43,8 @@ export default class TodoRestApiService implements ToDoService {
       body: JSON.stringify(values),
     });
 
+    this.logger.log('updated item');
+
     return response.json();
   }
 
@@ -38,5 +52,7 @@ export default class TodoRestApiService implements ToDoService {
     await fetch(`/api/todos/${toDoId}`, {
       method: 'DELETE',
     });
+
+    this.logger.log('deleted item');
   }
 }
